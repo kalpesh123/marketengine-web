@@ -2,43 +2,20 @@ pipeline {
     agent any
     
     tools{
-        jdk 'jdk17'
+        jdk 'jdk11'
         nodejs 'node16'
         
     }
     
-    environment{
-        SCANNER_HOME= tool 'sonar-scanner'
-    }
-    
+  
     stages {
         stage('Git Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/jaiswaladi246/fullstack-bank.git'
+                git branch: 'main', url: 'https://github.com/kalpesh123/marketengine-web.git'
             }
         }
         
-        stage('OWASP FS SCAN') {
-            steps {
-                dependencyCheck additionalArguments: '--scan ./app/backend --disableYarnAudit --disableNodeAudit', odcInstallation: 'DC'
-                    dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-            }
-        }
-        
-        stage('TRIVY FS SCAN') {
-            steps {
-                sh "trivy fs ."
-            }
-        }
-        
-        stage('SONARQUBE ANALYSIS') {
-            steps {
-                withSonarQubeEnv('sonar') {
-                    sh " $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Bank -Dsonar.projectKey=Bank "
-                }
-            }
-        }
-        
+
         
          stage('Install Dependencies') {
             steps {
@@ -49,7 +26,7 @@ pipeline {
         
         stage('Build') {
             steps {
-                dir('/root/.jenkins/workspace/marketengine-web/app') {
+                dir('/root/.jenkins/workspace/marketengine-services/app') {
                     sh "npm install"
                 }
             }
