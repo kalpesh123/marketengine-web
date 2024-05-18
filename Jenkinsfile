@@ -16,7 +16,7 @@ pipeline {
   
         stage('install & Build') {
             steps {
-                dir('/root/.jenkins/workspace/marketengine-services/app') {
+                dir('/root/.jenkins/workspace/marketengine-web/app') {
                     sh "npm install"
                 }
             }
