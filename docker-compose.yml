@@ -1,0 +1,18 @@
+version: '3.5'
+
+services:
+    container_name: ng_frontend
+    build: ./frontend
+    ports:
+      - 3000:3000
+    platform: linux/x86_64
+    working_dir: /app-frontend
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:3001
+    healthcheck:
+      test: ["CMD", "lsof", "-t", "-i:3000"]
+      timeout: 10s
+      retries: 5
